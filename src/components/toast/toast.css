@@ -1,0 +1,16 @@
+/*
+* @Author: {daihanqiao}
+* @Date:   2015-12-19 13:33:14
+* @Last Modified by:   {daihanqiao}
+* @Last Modified time: 2015-12-19 15:13:13
+*/
+.toast-container{
+    font-size: 14px;
+    width: 270px;
+    margin: 5px auto;
+    padding: 5px;
+    text-align: center;
+    color: #000;
+    border-radius: 3px;
+    background-color: #d8d8d8;
+}

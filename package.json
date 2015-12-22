@@ -1,0 +1,35 @@
+{
+  "name": "React-Contacts",
+  "version": "1.0.0",
+  "description": "基于react的通讯录，使用webpack打包项目",
+  "main": "webpack.config.js",
+  "dependencies": {},
+  "devDependencies": {
+    "css-loader": "^0.23.0",
+    "extract-text-webpack-plugin": "^0.9.1",
+    "js-sha1": "^0.3.0",
+    "jsx-loader": "^0.13.2",
+    "lodash": "^3.10.1",
+    "pubsub-js": "^1.5.3",
+    "react": "^0.14.3",
+    "react-bootstrap": "^0.28.1",
+    "react-dom": "^0.14.3",
+    "reqwest": "^2.0.5",
+    "style-loader": "^0.13.0",
+    "webpack": "^1.12.9"
+  },
+  "scripts": {
+    "dev": "set NODE_ENV=dev&webpack --progress --colors&node .\\bin\\packHtml.js",
+    "release": "set NODE_ENV=release&webpack -p --progress --colors&node .\\bin\\packHtml.js",
+    "watch": "npm run dev&node .\\bin\\packHtml.js&webpack -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "\u0016https://bitbucket.org/daihanqiao"
+  },
+  "keywords": [
+    "react webpack contacts"
+  ],
+  "author": "daihanqiao@126.com",
+  "license": "ISC"
+}
