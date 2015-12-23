@@ -1,5 +1,5 @@
 {
-  "name": "React-Contacts",
+  "name": "react-contacts",
   "version": "1.0.0",
   "description": "基于react的通讯录，使用webpack打包项目",
   "main": "webpack.config.js",
