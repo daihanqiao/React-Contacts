@@ -2,7 +2,7 @@
 * @Author: daihanqiao
 * @Date:   2015-12-08 19:59:14
 * @Last Modified by:   daihanqiao
-* @Last Modified time: 2015-12-22 16:51:35
+* @Last Modified time: 2015-12-23 13:35:16
 * webpack配置文件
 */
 //根据环境变量配置输出目录
@@ -13,10 +13,10 @@ var path = require('path');
 var getPath = function(url) {
     return path.resolve(__dirname, url);
 };
-console.log('environment：' + process.env.NODE_ENV);
-var outputDir = (process.env.NODE_ENV == 'release') ? 'release' : 'dev';
+var isRelease = (process.env.NODE_ENV == 'release');
+var outputDir = isRelease ? 'release' : 'dev';
 //发布版做相应设置
-if(outputDir == 'release'){
+if(isRelease){
     //删除release目录
     if(fs.existsSync(getPath(outputDir))){
         var exec = require('child_process').exec;
@@ -92,8 +92,8 @@ console.log('alias:' , aliasList);
 console.log('----------------------------------------------');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-var outputName = outputDir == 'release' ? 'js/[name].[hash:8].js' :'js/[name].js';
-var extractTextName = outputDir == 'release' ? 'css/[name].[hash:8].css' : 'css/[name].css';
+var outputName = isRelease ? 'js/[name].[hash:8].js' :'js/[name].js';
+var extractTextName = isRelease ? 'css/[name].[hash:8].css' : 'css/[name].css';
 
 var plugins = [
     new webpack.optimize.CommonsChunkPlugin({
@@ -107,6 +107,10 @@ var plugins = [
     new webpack.DefinePlugin({      //该插件可以增加公共配置
         __DEBUG__:true,
     }),
+    // new webpack.ProvidePlugin({     //开启后js文件中不需要手动require:react,react-dom
+    //     React: 'react',
+    //     ReactDOM: 'react-dom',
+    // }),
 ];
 
 //webpack配置
