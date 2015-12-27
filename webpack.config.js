@@ -2,7 +2,7 @@
 * @Author: daihanqiao
 * @Date:   2015-12-08 19:59:14
 * @Last Modified by:   daihanqiao
-* @Last Modified time: 2015-12-23 13:35:16
+* @Last Modified time: 2015-12-27 21:32:07
 * webpack配置文件
 */
 //根据环境变量配置输出目录
@@ -37,6 +37,7 @@ function copyObj(fromObj,toObj){
     }
 }
 //根据fileType获取文件别名列表和不带后缀的文件名列表
+var aliasTypeList = ['js','css'];
 function getFileList(path){
     var fileAliasList = {};//文件别名{'alis':fullPath}
     var entryAliasList = {};//入口程序别名
@@ -49,10 +50,13 @@ function getFileList(path){
             if (stats.isDirectory()) {
                 walk(tmpPath, fileAliasList,entryAliasList,entryNameList);
             } else {
-                var fileType = tmpPath.split('.').pop();
+                var fileType = tmpPath.split('.').pop().toLowerCase();
                 var fileName =tmpPath.split('/').pop().replace(/\.\w+$/,'');
-                if(fileType == 'html'){
+                if(aliasTypeList.indexOf(fileType) == -1){
                     return false;
+                }
+                if(entryAliasList[fileName] || fileAliasList[fileName]){
+                    throw "出现重名文件：" + fileName;
                 }
                 //入口程序js
                 if(fileType == 'js' && fileName.indexOf('.entry') != -1){
@@ -106,6 +110,7 @@ var plugins = [
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({      //该插件可以增加公共配置
         __DEBUG__:true,
+        __READY__:{'ready':function(){ready()}}
     }),
     // new webpack.ProvidePlugin({     //开启后js文件中不需要手动require:react,react-dom
     //     React: 'react',
