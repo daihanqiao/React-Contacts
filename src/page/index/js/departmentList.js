@@ -2,7 +2,7 @@
 * @Author: daihanqiao
 * @Date:   2015-12-20 14:50:58
 * @Last Modified by:   daihanqiao
-* @Last Modified time: 2015-12-23 13:33:19
+* @Last Modified time: 2016-01-06 10:16:15
 */
 
 'use strict';
@@ -48,24 +48,20 @@ var DepartmentItem = React.createClass({
 	}
 });
 module.exports = React.createClass({
-	delHandler:function(e) {
-	    var obj = {
-	    	id:this.props.memberData.id,
-	    	member_department_id:this.props.memberData.member_department_id,
-	    	member_name:this.props.memberData.member_name
-	    };
-		Pubsub.publish(EVENT_CFG.delMemberEvent,obj);
+	getInitialState: function() {
+		return {
+			departmentDataList: []
+		};
 	},
 	render:function () {
-		var departmentDataList = this.props.departmentDataList;
-		var domList = [];
-		_.map(departmentDataList,function(data){
-			domList.push(<Panel className={'index-memberItemGroup'} header={data.department_name} key={data.id} eventKey={data.id}>
-					<DepartmentItem data={data}></DepartmentItem>
-				</Panel>);
+		var departmentDataList = this.state.departmentDataList;
+		var panelList = _.map(departmentDataList,function(data){
+			return 	<Panel className={'index-memberItemGroup'} header={data.department_name} key={data.id} eventKey={data.id}>
+						<DepartmentItem data={data}></DepartmentItem>
+					</Panel>;
 		});
 		return <PanelGroup defaultActiveKey = "0" accordion>
-			{domList}
+			{panelList}
 		</PanelGroup>
 	}
 });

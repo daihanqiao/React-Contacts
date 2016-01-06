@@ -2,7 +2,7 @@
 * @Author: daihanqiao
 * @Date:   2015-12-08 19:59:14
 * @Last Modified by:   daihanqiao
-* @Last Modified time: 2015-12-27 21:32:07
+* @Last Modified time: 2016-01-06 10:03:05
 * webpack配置文件
 */
 //根据环境变量配置输出目录
@@ -25,19 +25,10 @@ if(isRelease){
         });
     }
 }
-//复制连接两个obj
-function copyObj(fromObj,toObj){
-    for (var attr in fromObj) {
-        if (fromObj.hasOwnProperty(attr)){
-            if(toObj[attr]){
-                throw "出现重名文件：" + toObj[attr];
-            }
-            toObj[attr] = fromObj[attr];
-        }
-    }
-}
 //根据fileType获取文件别名列表和不带后缀的文件名列表
 var aliasTypeList = ['js','css'];
+//图片类型文件
+var imageTypeList=["jpg","gif","jpeg","png",'bmp'];
 function getFileList(path){
     var fileAliasList = {};//文件别名{'alis':fullPath}
     var entryAliasList = {};//入口程序别名
@@ -52,18 +43,19 @@ function getFileList(path){
             } else {
                 var fileType = tmpPath.split('.').pop().toLowerCase();
                 var fileName =tmpPath.split('/').pop().replace(/\.\w+$/,'');
-                if(aliasTypeList.indexOf(fileType) == -1){
+                if(aliasTypeList.indexOf(fileType) === -1){
                     return false;
                 }
                 if(entryAliasList[fileName] || fileAliasList[fileName]){
                     throw "出现重名文件：" + fileName;
                 }
                 //入口程序js
-                if(fileType == 'js' && fileName.indexOf('.entry') != -1){
+                if(fileType === 'js' && fileName.indexOf('.entry') !== -1){
                     entryAliasList[fileName] = getPath(tmpPath);
                     entryNameList.push(fileName);
                 }else{
-                    fileType == 'css' && (fileName = fileName + 'Css');
+                    fileType === 'css' && (fileName = fileName + 'Css');
+                    (imageTypeList.indexOf(fileType) !== -1) && (fileName = fileName + 'Img');
                     fileAliasList[fileName] = getPath(tmpPath);
                 }
             }
@@ -77,13 +69,9 @@ function getFileList(path){
         };
 }
 //所有components资源别名
-var aliasList = getFileList(getPath('src/components')).aliasList;
+var aliasList = getFileList(getPath('src')).aliasList;
 //所有page目录下文件列表
 var pageFileList = getFileList(getPath('src/page'));
-//所有page除入口程序以外的资源别名
-var pageAliasList = pageFileList.aliasList;
-//将所有资源别名合并到aliasList
-copyObj(pageAliasList,aliasList);
 //入口文件配置
 var entryAliasList = pageFileList.entryAliasList;
 var entryNameList = pageFileList.entryNameList;
@@ -96,8 +84,11 @@ console.log('alias:' , aliasList);
 console.log('----------------------------------------------');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-var outputName = isRelease ? 'js/[name].[hash:8].js' :'js/[name].js';
-var extractTextName = isRelease ? 'css/[name].[hash:8].css' : 'css/[name].css';
+var needHash = isRelease;
+var outputName = needHash ? 'js/[name].[hash:8].js' :'js/[name].js';
+var extractTextName = needHash ? 'css/[name].[hash:8].css' : 'css/[name].css';
+var imageLoader = needHash ? 'url-loader?name=images/[name].[hash:8].[ext]&limit=8192' : 'url-loader?name=images/[name].[ext]&limit=8192';
+var fontLoader = needHash ? 'url?name=fonts/[name].[hash:8].[ext]&prefix=font/&limit=10000' : 'url?name=fonts/[name].[ext]&prefix=font/&limit=10000';
 
 var plugins = [
     new webpack.optimize.CommonsChunkPlugin({
@@ -110,7 +101,6 @@ var plugins = [
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({      //该插件可以增加公共配置
         __DEBUG__:true,
-        __READY__:{'ready':function(){ready()}}
     }),
     // new webpack.ProvidePlugin({     //开启后js文件中不需要手动require:react,react-dom
     //     React: 'react',
@@ -125,15 +115,16 @@ module.exports = {
     //入口文件输出配置
     output: {
         path: getPath(outputDir),
-        publicPath: 'http://react.contacts.com/'+outputDir+'/',//文件公共路径
+        publicPath: '../',//资源文件路径，包括字体，按需加载模块等
         filename: outputName
     },
     module: {
         //加载器配置
         loaders: [
-            {test:/\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")},
+            { test:/\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader")},
             { test: /\.js$/, loader: 'jsx-loader?harmony' },
-            { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192'},
+            { test: /\.(png|jpg)$/, loader: imageLoader},
+            { test   : /\.woff|\.woff2|\.svg|.eot|.otf|\.ttf/, loader : fontLoader},
         ],
         noParse: [] //不解析某文件，例如压缩后的react.min.js，和输出无关
     },
@@ -143,7 +134,7 @@ module.exports = {
     //其它解决方案配置
     resolve: {
         // root: './', //绝对路径
-        extensions: ['', '.js', '.json', '.scss', '.css'],
+        extensions: ['', '.js', '.json', '.scss', '.css', "jpg"," gif", "jpeg", "png", 'bmp'],
         alias: aliasList
     }
 };

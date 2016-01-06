@@ -2,7 +2,7 @@
 * @Author: daihanqiao
 * @Date:   2015-12-20 14:54:25
 * @Last Modified by:   daihanqiao
-* @Last Modified time: 2015-12-22 09:05:25
+* @Last Modified time: 2016-01-06 10:12:22
 */
 
 'use strict';
@@ -77,10 +77,9 @@ var MemberItem = React.createClass({
 module.exports = React.createClass({
 	render:function (argument) {
 		var memberDataList = this.props.memberDataList;
-		var domList = [];
-		_.map(memberDataList,function(data,index){
-			domList.push(<MemberItem key={'memberItem_'+index} memberData={data}></MemberItem>);
+		var itemList = _.map(memberDataList,function(data,index){
+            return <MemberItem key={'memberItem_'+index} memberData={data}></MemberItem>;
 		});
-		return <div>{domList}</div>
+		return <div>{itemList}</div>
 	}
 });

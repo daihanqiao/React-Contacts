@@ -2,12 +2,18 @@
 * @Author: {daihanqiao}
 * @Date:   2015-12-15 10:09:36
 * @Last Modified by:   {daihanqiao}
-* @Last Modified time: 2015-12-15 12:56:06
+* @Last Modified time: 2016-01-06 10:29:52
 * 打包html,并插入公共js,css以及页面js,css文件引入
 */
 
+//大于10kb的文件使用gzip
+var GZIP_SIZE = 10240;
+//是否开启gzip压缩，开启gzip压缩时，服务器必须相应配置，Apache:AddEncoding x-gzip .gz .tgz
+var isOpenGzip = (parseInt(process.env.NODE_GZIP) === 1);
+
 var fs = require('fs');
 var path = require('path');
+var zlib = require('zlib');
 //生成绝对路径
 var getPath = function(url) {
     return path.resolve('./', url);
@@ -26,16 +32,16 @@ function insStrBeforeIndex(oldStr,specifyStr,insStr,fileName){
 		throw fileName + ".html Don't have Num:" + arr.length + " " + specifyStr + " !";
 	}
 	arr[0] = arr[0] + insStr;
-	// console.log(arr);
 	var newStr = arr.join(specifyStr);
 	return newStr;
 }
 //生成输出目录和输出目录下html目录
 mkdirSync(getPath(outputDir));
 mkdirSync(getPath(outputDir + '/html/'));
+
 //输出目录下所有js,css文件列表
 function getFileList(path){
-    var fileNameList = [];//不带后缀文件名
+    var fileNameList = [];//不带路径文件名
     walk = function(path, fileNameList){
         files = fs.readdirSync(path);
         files.forEach(function(item) {
@@ -45,7 +51,16 @@ function getFileList(path){
                 walk(tmpPath,fileNameList);
             } else {
                 var fileName =tmpPath.split('/').pop();
-                fileNameList.push(fileName);
+                //css开启gzip测试浏览器解析不成功
+                if(isOpenGzip && stats.size >= GZIP_SIZE && fileName.indexOf('.css') === -1){
+                    var gzip = zlib.createGzip();
+                    var inp = fs.createReadStream(tmpPath);
+                    var out = fs.createWriteStream(tmpPath+'.gz');
+                    inp.pipe(gzip).pipe(out);
+                    fileNameList.push(fileName + '.gz');
+                }else{
+                    fileNameList.push(fileName);
+                }
             }
         });
     };
@@ -53,17 +68,15 @@ function getFileList(path){
     return fileNameList;
 }
 var fileNameList = getFileList(getPath(outputDir));
-console.log(fileNameList);
 var fileListLen = fileNameList.length;
 //根据原始文件名获取带Hash的文件名。null为找不到该文件
 function checkFileName(fileName,fileType){
-	for(var i = 0;i<fileListLen;i++){
-		if(fileNameList[i].indexOf(fileName) != -1 && fileNameList[i].indexOf(fileType) != -1){
-			console.log(fileNameList[i]);
-			return fileNameList[i];
-		}
-	}
-	return null;
+    for(var i = 0;i<fileListLen;i++){
+        if(fileNameList[i].indexOf(fileName) !== -1 && fileNameList[i].indexOf(fileType) !== -1){
+            return fileNameList[i];
+        }
+    }
+    return null;
 }
 function genHtmlFiles(path){
     walk = function(path){
@@ -123,4 +136,5 @@ function genHtmlFiles(path){
     };
     walk(path);
 }
+//生成html文件
 genHtmlFiles(getPath('src/page'));

@@ -5,8 +5,10 @@
   "main": "webpack.config.js",
   "dependencies": {},
   "devDependencies": {
+    "bootstrap": "^3.3.6",
     "css-loader": "^0.23.0",
     "extract-text-webpack-plugin": "^0.9.1",
+    "file-loader": "^0.8.5",
     "js-sha1": "^0.3.0",
     "jsx-loader": "^0.13.2",
     "lodash": "^3.10.1",
@@ -16,12 +18,14 @@
     "react-dom": "^0.14.3",
     "reqwest": "^2.0.5",
     "style-loader": "^0.13.0",
+    "url-loader": "^0.5.7",
     "webpack": "^1.12.9"
   },
   "scripts": {
-    "dev": "set NODE_ENV=dev&webpack --progress --colors&node .\\bin\\packHtml.js",
-    "release": "set NODE_ENV=release&webpack -p --progress --colors&node .\\bin\\packHtml.js",
-    "watch": "npm run dev&node .\\bin\\packHtml.js&webpack -w"
+    "dev": "set NODE_ENV=dev&webpack --progress --colors&node .\\bin\\webpackAfter.js",
+    "release": "set NODE_ENV=release&webpack -p --progress --colors&node .\\bin\\webpackAfter.js",
+    "watch": "npm run dev&node .\\bin\\webpackAfter.js&webpack -w",
+    "release-gzip": "set NODE_ENV=release&set NODE_GZIP=1&webpack -p --progress --colors&node .\\bin\\webpackAfter.js"
   },
   "repository": {
     "type": "git",

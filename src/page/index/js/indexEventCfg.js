@@ -2,7 +2,7 @@
 * @Author: daihanqiao
 * @Date:   2015-12-20 16:06:03
 * @Last Modified by:   daihanqiao
-* @Last Modified time: 2015-12-21 16:22:05
+* @Last Modified time: 2016-01-06 10:07:18
 */
 
 'use strict';
@@ -13,4 +13,4 @@ module.exports = {
 	delDepartmentEvent : 'index.delDepartmentEvent',
 	editDepartmentEvent : 'index.editDepartmentEvent',
 	addDepartmentEvent : 'index.addDepartmentEvent',
-}
+};
