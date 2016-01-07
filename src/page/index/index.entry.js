@@ -2,7 +2,7 @@
  * @Author: daihanqiao
  * @Date:   2015-12-05 22:39:04
  * @Last Modified by:   daihanqiao
- * @Last Modified time: 2016-01-06 09:57:08
+ * @Last Modified time: 2016-01-07 15:52:16
  */
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -59,7 +59,7 @@ var request = function(urlPath, succCallBack, param, method) {
     function ajax(urlPath, succCallBack, param, method){
         method = method || "GET";
         Reqwest({
-            url: "https://d.apicloud.com/mcm/api/" + urlPath,
+            url: "https://d.apicloud.com/mcm/api/" + urlPath + '?filter=' + encodeURIComponent(JSON.stringify({limit:500})),
             method: method,
             data: param,
             dataType: 'json',
