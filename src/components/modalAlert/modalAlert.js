@@ -32,12 +32,12 @@ var ModalAlert = React.createClass({
     render:function(){
         var input = null;
         if(this.state.confirm === 1){
-            input = <Input ref="nameInput" type="text" placeholder={this.state.namePlaceholder} bsStyle="success" />
+            input = <Input ref="nameInput" type="text" placeholder={this.state.namePlaceholder} bsStyle="success" />;
         }else if(this.state.confirm === 2){
             input = <div>
                         <Input ref="nameInput" type="text" placeholder={this.state.namePlaceholder} bsStyle="success" />
                         <Input ref="mobileInput" type="text" placeholder={this.state.mobilePlaceholder} bsStyle="success" />
-                    </div>
+                    </div>;
         }
         return  <Modal show={this.state.show} onHide={this.cancelBack} aria-labelledby="contained-modal-title">
                     <Modal.Body>
@@ -48,9 +48,9 @@ var ModalAlert = React.createClass({
                         <Button onClick={this.okCallBack}>确 定</Button>
                         <Button onClick={this.cancelBack}>关 闭</Button>
                     </Modal.Footer>
-                </Modal>
+                </Modal>;
     }
-})
+});
 
 //对外接口
 var modalAlertCon = null;
@@ -64,4 +64,4 @@ module.exports = {
         states.show = true;
 		ReactDOM.render(<ModalAlert></ModalAlert>,modalAlertCon).setState(states);
 	}
-}
+};

@@ -4,11 +4,12 @@
  * @Last Modified by:   daihanqiao
  * @Last Modified time: 2016-01-07 15:52:16
  */
+'use strict';
 var React = require('react');
 var ReactDOM = require('react-dom');
 var AddGroup = require('addGroup');
-var Reqwest = require('reqwest');
-var Sha1 = require('js-sha1');
+var reqwest = require('reqwest');
+var sha1 = require('js-sha1');
 var Pubsub = require('pubsub-js');
 var _ = {
     result :require('lodash/object/result'),
@@ -54,11 +55,11 @@ function setMemberData(memberList, departmentList) {
 //ajax请求
 var request = function(urlPath, succCallBack, param, method) {
     var now = _.now();
-    var appKey = Sha1("A6993663430779" + "UZ" + "99788B23-69C1-ECEA-DB4E-8186F7DBA764" + "UZ" + now) + "." + now;
+    var appKey = sha1("A6993663430779" + "UZ" + "99788B23-69C1-ECEA-DB4E-8186F7DBA764" + "UZ" + now) + "." + now;
     var needUpVersion = true;
     function ajax(urlPath, succCallBack, param, method){
         method = method || "GET";
-        Reqwest({
+        reqwest({
             url: "https://d.apicloud.com/mcm/api/" + urlPath + '?filter=' + encodeURIComponent(JSON.stringify({limit:500})),
             method: method,
             data: param,
@@ -131,7 +132,7 @@ request('department_class', function(ret) {
                             }, {requests: requestList}, 'post');
                         }
                         _.remove(memberDepartmentList,function(n){
-                            return n.id == data.id;
+                            return n.id === data.id;
                         });
                         render();
                     }
@@ -200,7 +201,7 @@ request('department_class', function(ret) {
                     if (ret) {
                         var member_list = _.result(_.find(memberDepartmentList, {id:data.member_department_id}), 'member_list');
                         _.remove(member_list,function(n){
-                            return n.id == data.id;
+                            return n.id === data.id;
                         });
                         render();
                     }
@@ -224,4 +225,4 @@ request('department_class', function(ret) {
             }
         });
     });
-})
+});

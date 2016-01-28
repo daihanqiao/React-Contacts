@@ -15,6 +15,6 @@ module.exports = React.createClass({
 		Pubsub.publish(EVENT_CFG.addDepartmentEvent);
 	},
 	render:function(){
-		return <Button onClick={this.clickHandler} bsStyle="info" bsSize="large" block>+ 增加分组 +</Button>
+		return <Button onClick={this.clickHandler} bsStyle="info" bsSize="large" block>+ 增加分组 +</Button>;
 	}
-})
+});

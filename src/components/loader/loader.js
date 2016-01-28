@@ -41,4 +41,4 @@ module.exports = {
 			ReactDOM.unmountComponentAtNode(loaderLayer);
 		}
 	}
-}
+};

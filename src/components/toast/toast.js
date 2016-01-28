@@ -9,6 +9,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 require("toastCss");
+var toastLayer = null;
 //组件
 var Toast = React.createClass({
 	propTypes:{
@@ -20,9 +21,9 @@ var Toast = React.createClass({
 	},
 	componentDidMount:function(){
 		if(toastLayer){
-			function unmount(){
+			var unmount = function(){
 				ReactDOM.unmountComponentAtNode(toastLayer);
-			}
+			};
 			setTimeout(unmount,this.props.time);
 		}
 	},
@@ -33,7 +34,6 @@ var Toast = React.createClass({
 	}
 });
 //对外接口
-var toastLayer = null;
 module.exports = {
 	show:function(msg,time){
 		if(!toastLayer){
@@ -43,4 +43,4 @@ module.exports = {
 		}
 		ReactDOM.render(<Toast msg={msg} time={time}></Toast>,toastLayer);
 	}
-}
+};

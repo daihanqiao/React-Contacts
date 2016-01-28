@@ -51,7 +51,7 @@ var MemberItem = React.createClass({
 	        };
 	    	Pubsub.publish(EVENT_CFG.editMemberEvent,obj);
     	}else{
-    		this.setState({editing:true,editLabel:'保存'})
+    		this.setState({editing:true,editLabel:'保存'});
     	}
     },
     render: function() {
@@ -60,18 +60,18 @@ var MemberItem = React.createClass({
             labelCon = <span>
                 <span className = {'index-memberItemLabel'}>{this.props.memberData.member_name}</span>
                 <span className = {'index-memberItemLabel'}>{this.props.memberData.member_mobile}</span>
-            </span>
+            </span>;
         }else{
             labelCon = <span>
                 <Input ref="nameInput" type="text" placeholder="联系人姓名" bsStyle="success" />
                 <Input ref="mobileInput" type="text" placeholder="联系电话" bsStyle="success" />
-            </span>
+            </span>;
         }
         return  <div className = {'index-memberItem'} >
                     {labelCon}
                     <Button onClick={this.delHandler} bsStyle = "danger">删除</Button>
                     <Button onClick={this.editHandler} bsStyle="success">{this.state.editLabel}</Button>
-                </div>
+                </div>;
     }
 });
 module.exports = React.createClass({
@@ -80,6 +80,6 @@ module.exports = React.createClass({
 		var itemList = _.map(memberDataList,function(data,index){
             return <MemberItem key={'memberItem_'+index} memberData={data}></MemberItem>;
 		});
-		return <div>{itemList}</div>
+		return <div>{itemList}</div>;
 	}
 });

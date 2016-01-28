@@ -32,7 +32,7 @@ var DepartmentBtn = React.createClass({
 					<a onClick={this.addHandler} className={"add btn btn-link"}>添加联系人</a>
 					<a onClick={this.editHandler} className={"edit btn btn-link"}>编辑</a>
 					<a onClick={this.delHandler} className={"close"} aria-label="Close"><span aria-hidden="true">&times;</span></a>
-				</div>
+				</div>;
 	}
 });
 var DepartmentItem = React.createClass({
@@ -44,7 +44,7 @@ var DepartmentItem = React.createClass({
 		ReactDOM.render(<DepartmentBtn data={this.props.data}></DepartmentBtn>,departmentBtnCon);
 	},
 	render:function(){
-		return <MemberList memberDataList={this.props.data.member_list}></MemberList>
+		return <MemberList memberDataList={this.props.data.member_list}></MemberList>;
 	}
 });
 module.exports = React.createClass({
@@ -62,6 +62,6 @@ module.exports = React.createClass({
 		});
 		return <PanelGroup defaultActiveKey = "0" accordion>
 			{panelList}
-		</PanelGroup>
+		</PanelGroup>;
 	}
 });
