@@ -56,7 +56,7 @@ function getFileList(path){
             (imageTypeList.indexOf(fileType) !== -1) && (fileName = fileName + 'Img');
             fileAliasList[fileName] = getPath(tmpPath);
         }
-    })
+    });
     return {
             'aliasList':fileAliasList,
             'entryAliasList':entryAliasList,
