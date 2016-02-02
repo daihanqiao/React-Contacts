@@ -23,6 +23,7 @@ var isRelease = (process.env.NODE_ENV === 'release');
 var outputDir = isRelease ? 'release' : 'dev';
 //dev模式下当前打包目录，不传则默认全部打包
 var curPageDir = JSON.parse(process.env.npm_config_argv).remain[0] || "";
+isRelease && curPageDir = "";
 //生成目录
 function mkdirSync(path){
     if(!fs.existsSync(getPath(path))){
