@@ -63,7 +63,7 @@ function getFileList(path){
             'entryNameList':entryNameList
         };
 }
-//所有components资源别名
+//所有文件别名(不包括入口程序和html)
 var aliasList = getFileList(getPath('src')).aliasList;
 //所有page目录下文件列表
 var pageFileList = getFileList(getPath('src/page'));
@@ -71,7 +71,6 @@ var pageFileList = getFileList(getPath('src/page'));
 var entryAliasList = pageFileList.entryAliasList;
 var entryNameList = pageFileList.entryNameList;
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-
 var needHash = isRelease;
 var outputName = needHash ? 'js/[name].[chunkhash:8].js' :'js/[name].js';
 var extractTextName = needHash ? 'css/[name].[chunkhash:8].css' : 'css/[name].css';

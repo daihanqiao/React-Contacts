@@ -1,5 +1,5 @@
 ## 项目简介
-    使用react实现的通讯录管理后台,使用webpack打包
+    使用react实现的通讯录管理后台，使用webpack打包
 
 ## 项目详解
 * 见[个人博客](http://daihanqiao.github.io/2016/01/14/Webpack—React最佳实践（一）/)
